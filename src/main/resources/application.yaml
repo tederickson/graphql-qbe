@@ -1,0 +1,34 @@
+spring:
+  application:
+    name: graphql-qbe
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  graphql:
+    graphiql:
+      enabled: true
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/graphql-qbe
+    username:
+    password:
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      connection-timeout: 3000
+      maximum-pool-size: 10
+      minimum-idle: 5
+      idle-timeout: 6000
+      max-lifetime: 180000
+
+logging:
+  level:
+    org:
+      springframework:
+        jdbc:
+          core: TRACE
+      hibernate:
+        sql: DEBUG
+      testcontainers: INFO

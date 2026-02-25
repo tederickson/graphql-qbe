@@ -1,0 +1,21 @@
+type AuthorEntity {
+  id: ID!
+
+  firstName: String!
+  lastName: String!
+  email: String!
+  username: String!
+}
+
+input AuthorInput {
+  firstName: String
+  lastName: String
+  email: String
+  username: String
+}
+
+type Query {
+    authorById(id: ID!): AuthorEntity
+    allAuthors: [AuthorEntity]!
+    authors(authorInput: AuthorInput!): [AuthorEntity]!
+}
