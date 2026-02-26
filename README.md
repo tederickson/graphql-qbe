@@ -20,7 +20,7 @@ of [traditional vs QBE approach](https://github.com/danvega/graphql-qbe/blob/mai
 1. Start the application:
 
 ```bash
-./mvn spring-boot:run
+mvn spring-boot:run
 ```
 
 2. Access GraphiQL interface at: http://localhost:8080/graphiql
