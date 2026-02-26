@@ -6,20 +6,21 @@ The exciting part is there is no need for a Controller, Service or Data Mappers.
 GraphQL uses the GraphQlRepository annotation and QueryByExampleExecutor interface instead of a long list declared
 methods.
 
-Check out [traditional vs QBE approach](https://github.com/danvega/graphql-qbe/blob/main/README.md)
+Check out Dan's code and documentation
+of [traditional vs QBE approach](https://github.com/danvega/graphql-qbe/blob/main/README.md)
 
 ## Project Requirements
 
 - Java 21
 - Maven 3.9.x
-- PostgreSQL 16
+- PostgreSQL 17
 
 ## Running the Application
 
 1. Start the application:
 
 ```bash
-./mvnw spring-boot:run
+./mvn spring-boot:run
 ```
 
 2. Access GraphiQL interface at: http://localhost:8080/graphiql
@@ -70,7 +71,9 @@ query{
 ```
 
 ### Multiple tests and queries
+
 [AuthorRepository tests](src/test/java/com/erickson/graphql_db/repository/AuthorRepositoryTest.java)
+
 * findAll
 * findById
 * findByFirstAndLastName
