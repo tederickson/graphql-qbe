@@ -18,7 +18,7 @@ class AuthorRepositoryTest {
     private HttpGraphQlTester graphQlTester;
 
     @Test
-    void testFindAll() {
+    void findAll() {
         String query = """
                     query {
                         allAuthors {
@@ -38,7 +38,7 @@ class AuthorRepositoryTest {
     }
 
     @Test
-    void testFindJulesVerne() {
+    void findByFirstAndLastName() {
         String query = """
                     query{
                        authors(authorInput:  {
@@ -60,13 +60,19 @@ class AuthorRepositoryTest {
                 .hasSize(1);
 
         AuthorEntity authorEntity = list.get().getFirst();
-        assertEquals(5, authorEntity.getId());
-        assertEquals("Jules", authorEntity.getFirstName());
-        assertEquals("Verne", authorEntity.getLastName());
+
+        AuthorEntity expected = AuthorEntity.builder()
+                .id(5L)
+                .firstName("Jules")
+                .lastName("Verne")
+                .username("jules")
+                .build();
+
+        assertEquals(expected, authorEntity);
     }
 
     @Test
-    void testFindJules() {
+    void findByFirstName() {
         String query = """
                     query{
                        authors(authorInput:  {
@@ -87,19 +93,23 @@ class AuthorRepositoryTest {
                 .hasSize(1);
 
         AuthorEntity authorEntity = list.get().getFirst();
-        assertEquals(5, authorEntity.getId());
-        assertEquals("Jules", authorEntity.getFirstName());
-        assertEquals("Verne", authorEntity.getLastName());
+        AuthorEntity expected = AuthorEntity.builder()
+                .id(5L)
+                .firstName("Jules")
+                .lastName("Verne")
+                .username("jules")
+                .build();
+
+        assertEquals(expected, authorEntity);
     }
 
     @Test
-    void testFindCharles() {
+    void findByUsername() {
         String query = """
                     query{
                        authors(authorInput:  {
                             username: "charles"
                        }) {
-                         id
                          firstName
                          lastName
                          username
@@ -107,16 +117,20 @@ class AuthorRepositoryTest {
                      }
                 """;
 
-        var list = graphQlTester.document(query)
+        AuthorEntity authorEntity = graphQlTester.document(query)
                 .execute()
                 .path("data.authors")
                 .entityList(AuthorEntity.class)
-                .hasSize(1);
+                .hasSize(1)
+                .get().getFirst();
 
-        AuthorEntity authorEntity = list.get().getFirst();
-        assertEquals(4, authorEntity.getId());
-        assertEquals("Charles", authorEntity.getFirstName());
-        assertEquals("Dickens", authorEntity.getLastName());
+        AuthorEntity expected = AuthorEntity.builder()
+                .firstName("Charles")
+                .lastName("Dickens")
+                .username("charles")
+                .build();
+
+        assertEquals(expected, authorEntity);
     }
 
     @Test
@@ -134,16 +148,15 @@ class AuthorRepositoryTest {
                      }
                 """;
 
-        var list = graphQlTester.document(query)
+        graphQlTester.document(query)
                 .execute()
                 .path("data.authors")
                 .entityList(AuthorEntity.class)
                 .hasSize(0);
     }
 
-
     @Test
-    void testFindById() {
+    void findById() {
         String query = """
                     query{
                        authorById(id: 3) {
@@ -151,6 +164,7 @@ class AuthorRepositoryTest {
                          firstName
                          lastName
                          username
+                         email
                        }
                      }
                 """;
@@ -161,8 +175,14 @@ class AuthorRepositoryTest {
                 .entity(AuthorEntity.class)
                 .get();
 
-        assertEquals(3, authorEntity.getId());
-        assertEquals("Jane", authorEntity.getFirstName());
-        assertEquals("Austen", authorEntity.getLastName());
+        AuthorEntity expected = AuthorEntity.builder()
+                .id(3L)
+                .firstName("Jane")
+                .lastName("Austen")
+                .username("jane")
+                .email("jane@test.net")
+                .build();
+
+        assertEquals(expected, authorEntity);
     }
 }
