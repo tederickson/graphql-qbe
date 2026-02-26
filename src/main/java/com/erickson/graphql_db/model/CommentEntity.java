@@ -3,6 +3,8 @@ package com.erickson.graphql_db.model;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 
@@ -16,10 +18,12 @@ public final class CommentEntity {
     @GeneratedValue
     private Long commentId;
 
-    private Long postId;
-
     private String name;
     private String content;
     private LocalDateTime publishedOn;
     private LocalDateTime updatedOn;
+
+    @ManyToOne
+    @JoinColumn(name = "postId", referencedColumnName = "postId", nullable = false)
+    private PostEntity post;
 }

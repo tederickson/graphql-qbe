@@ -24,10 +24,24 @@ type PostEntity {
   publishedOn: String!
 
   author: AuthorEntity!
+  comments: [CommentEntity]
+}
+
+type CommentEntity {
+  commentId: ID!
+
+  name: String!
+  content: String!
+  publishedOn: String!
+  updatedOn: String
+
+  post: PostEntity!
 }
 
 type Query {
     authorById(authorId: ID!): AuthorEntity
     allAuthors: [AuthorEntity]!
     authors(authorInput: AuthorInput!): [AuthorEntity]!
+
+    postById(postId: ID!): PostEntity
 }

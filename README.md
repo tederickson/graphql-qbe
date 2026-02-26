@@ -71,6 +71,41 @@ query{
 }
 ```
 
+### Query authors and posts using author id
+
+```graphql
+{
+  authorById(authorId: 2) {
+    firstName
+    lastName
+    posts {
+      postId
+      title
+      publishedOn
+    }
+  }
+}
+``` 
+
+### Query post and comments using post id
+
+```graphql
+{
+  postById(postId: 3) {
+    postId
+    title
+    publishedOn
+    
+    comments {
+      name
+      content
+      publishedOn
+      updatedOn
+    }
+  }
+}
+```
+
 ### Multiple tests and queries
 
 [AuthorRepository tests](src/test/java/com/erickson/graphql_db/repository/AuthorRepositoryTest.java)
@@ -81,3 +116,31 @@ query{
 * findByFirstName
 * findByUsername
 * findByEmail
+
+### Gotcha
+
+```graphql
+{
+  authorById(authorId: 2) {
+    firstName
+    lastName
+    posts {
+      postId
+      title
+      comments {
+        name
+      }
+    }
+  }
+}
+```
+
+Fails due to org.springframework.dao.InvalidDataAccessApiUsageException: org.hibernate.loader.MultipleBagFetchException:
+cannot simultaneously fetch multiple
+bags: [com.erickson.graphql_db.model.PostEntity.comments, com.erickson.graphql_db.model.AuthorEntity.posts]
+
+There are various solutions for handling this Hibernate error.  
+See [Spring Data Jpa Multiplebagfetchexception](https://www.springcloud.io/post/2022-06/spring-data-jpa-multiplebagfetchexception)
+
+The point is GraphQL can not magically drill down through multiple child tables using generated methods in a repository.
+Handling this use case requires a Controller, a Service and some thoughtful code.
