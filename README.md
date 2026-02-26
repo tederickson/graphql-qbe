@@ -55,7 +55,7 @@ query{ authorById(id: 5) {
 }
 ```
 
-### Query authors using example
+### Query authors using First and Last name
 
 ```graphql
 query{
@@ -70,3 +70,11 @@ query{
   }
 }
 ```
+
+### Multiple tests and queries
+[AuthorRepository tests](src/test/java/com/erickson/graphql_db/repository/AuthorRepositoryTest.java)
+* findAll
+* findById
+* findByFirstAndLastName
+* findByFirstName
+* findByUsername
