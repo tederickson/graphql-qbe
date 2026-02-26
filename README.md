@@ -79,3 +79,4 @@ query{
 * findByFirstAndLastName
 * findByFirstName
 * findByUsername
+* findByEmail

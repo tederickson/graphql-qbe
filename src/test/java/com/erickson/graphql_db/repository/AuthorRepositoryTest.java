@@ -134,6 +134,36 @@ class AuthorRepositoryTest {
     }
 
     @Test
+    void findByEmail() {
+        String query = """
+                    query{
+                       authors(authorInput:  {
+                            email: "alex@test.net"
+                       }) {
+                         firstName
+                         lastName
+                         username
+                       }
+                     }
+                """;
+
+        AuthorEntity authorEntity = graphQlTester.document(query)
+                .execute()
+                .path("data.authors")
+                .entityList(AuthorEntity.class)
+                .hasSize(1)
+                .get().getFirst();
+
+        AuthorEntity expected = AuthorEntity.builder()
+                .firstName("Alexandre")
+                .lastName("Dumas")
+                .username("alexandre")
+                .build();
+
+        assertEquals(expected, authorEntity);
+    }
+
+    @Test
     void testNoMatch() {
         String query = """
                     query{
