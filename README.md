@@ -37,7 +37,7 @@ The API supports the following queries:
 ```graphql
 query{
   allAuthors {
-    id
+    authorId
     firstName
     lastName
     username
@@ -48,8 +48,9 @@ query{
 ### Query author by ID
 
 ```graphql
-query{ authorById(id: 5) {
-    id
+{
+  authorById(authorId: 5) {
+    authorId
     firstName
     lastName
     username
@@ -60,12 +61,9 @@ query{ authorById(id: 5) {
 ### Query authors using First and Last name
 
 ```graphql
-query{
-  authors(authorInput:  {
-     lastName: "Verne"
-     firstName: "Jules"
-  }) {
-    id
+{
+  authors(authorInput: {lastName: "Verne", firstName: "Jules"}) {
+    authorId
     firstName
     lastName
     username
