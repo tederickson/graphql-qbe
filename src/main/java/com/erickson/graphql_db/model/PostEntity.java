@@ -3,23 +3,28 @@ package com.erickson.graphql_db.model;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.ToString;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "post")
 @Data
+@ToString(exclude = "author")
 public class PostEntity {
     @Id
     @GeneratedValue
-    private Long id;
-
-    private Long authorId;
+    private Long postId;
 
     private String title;
     private String content;
-    private LocalDateTime publishedOn;
-    private LocalDateTime updatedOn;
+    private LocalDate publishedOn;
+
+    @ManyToOne
+    @JoinColumn(name = "authorId", referencedColumnName = "authorId", nullable = false)
+    private AuthorEntity author;
 }

@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 public final class CommentEntity {
     @Id
     @GeneratedValue
-    private Long id;
+    private Long commentId;
 
     private Long postId;
 

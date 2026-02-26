@@ -9,6 +9,9 @@ methods.
 Check out Dan's code and documentation
 of [traditional vs QBE approach](https://github.com/danvega/graphql-qbe/blob/main/README.md)
 
+## Database
+
+
 ## Project Requirements
 
 - Java 21

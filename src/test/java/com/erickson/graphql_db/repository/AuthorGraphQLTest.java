@@ -1,19 +1,24 @@
 package com.erickson.graphql_db.repository;
 
 import com.erickson.graphql_db.model.AuthorEntity;
+import com.erickson.graphql_db.model.PostEntity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.graphql.tester.AutoConfigureHttpGraphQlTester;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.graphql.test.tester.HttpGraphQlTester;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import java.time.LocalDate;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @AutoConfigureHttpGraphQlTester
-class AuthorRepositoryTest {
-    @Autowired
-    AuthorRepository authorRepository;
+class AuthorGraphQLTest {
+
+
     @Autowired
     private HttpGraphQlTester graphQlTester;
 
@@ -22,7 +27,7 @@ class AuthorRepositoryTest {
         String query = """
                     query {
                         allAuthors {
-                            id
+                            authorId
                             firstName
                             lastName
                             username
@@ -45,7 +50,7 @@ class AuthorRepositoryTest {
                           lastName: "Verne"
                           firstName: "Jules"
                        }) {
-                         id
+                         authorId
                          firstName
                          lastName
                          username
@@ -62,7 +67,7 @@ class AuthorRepositoryTest {
         AuthorEntity authorEntity = list.get().getFirst();
 
         AuthorEntity expected = AuthorEntity.builder()
-                .id(5L)
+                .authorId(5L)
                 .firstName("Jules")
                 .lastName("Verne")
                 .username("jules")
@@ -78,7 +83,7 @@ class AuthorRepositoryTest {
                        authors(authorInput:  {
                             firstName: "Jules"
                        }) {
-                         id
+                         authorId
                          firstName
                          lastName
                          username
@@ -94,7 +99,7 @@ class AuthorRepositoryTest {
 
         AuthorEntity authorEntity = list.get().getFirst();
         AuthorEntity expected = AuthorEntity.builder()
-                .id(5L)
+                .authorId(5L)
                 .firstName("Jules")
                 .lastName("Verne")
                 .username("jules")
@@ -170,7 +175,7 @@ class AuthorRepositoryTest {
                        authors(authorInput:  {
                             firstName: "AbraCadabra"
                        }) {
-                         id
+                         authorId
                          firstName
                          lastName
                          username
@@ -189,8 +194,8 @@ class AuthorRepositoryTest {
     void findById() {
         String query = """
                     query{
-                       authorById(id: 3) {
-                         id
+                       authorById(authorId: 3) {
+                         authorId
                          firstName
                          lastName
                          username
@@ -206,7 +211,7 @@ class AuthorRepositoryTest {
                 .get();
 
         AuthorEntity expected = AuthorEntity.builder()
-                .id(3L)
+                .authorId(3L)
                 .firstName("Jane")
                 .lastName("Austen")
                 .username("jane")
@@ -215,4 +220,59 @@ class AuthorRepositoryTest {
 
         assertEquals(expected, authorEntity);
     }
+
+    @Test
+    void findById_IncludePosts() {
+        String query = """
+                    query{ authorById(authorId: 2) {
+                          firstName
+                          lastName
+                          posts {
+                            postId
+                            title
+                            publishedOn
+                          }
+                        }
+                      }
+                """;
+
+        AuthorEntity authorEntity = graphQlTester.document(query)
+                .execute()
+                .path("data.authorById")
+                .entity(AuthorEntity.class)
+                .get();
+
+        assertEquals("Alexandre", authorEntity.getFirstName());
+        assertEquals("Dumas", authorEntity.getLastName());
+        assertNull(authorEntity.getEmail());
+        assertNull(authorEntity.getUsername());
+        assertNull(authorEntity.getAuthorId());
+        assertEquals(3, authorEntity.getPosts().size());
+
+        for (PostEntity postEntity : authorEntity.getPosts()) {
+            final long postId = postEntity.getPostId();
+            String expectedDate;
+
+            if (postId == 1L) {
+                assertEquals("The Three Musketeers", postEntity.getTitle());
+                expectedDate = "1844-01-25";
+            }
+            else if (postId == 2L) {
+                assertEquals("The Count of Monte Cristo", postEntity.getTitle());
+                expectedDate = "1844-08-05";
+            }
+            else if (postId == 3L) {
+                assertEquals("The Man in the Iron Mask", postEntity.getTitle());
+                expectedDate = "1847-12-05";
+            }
+            else {
+                throw new IllegalStateException("Unexpected value: " + postEntity);
+            }
+
+            LocalDate publishedOn = LocalDate.parse(expectedDate);
+
+            assertEquals(publishedOn, postEntity.getPublishedOn());
+        }
+    }
 }
+

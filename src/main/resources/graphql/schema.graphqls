@@ -1,12 +1,3 @@
-type AuthorEntity {
-  id: ID!
-
-  firstName: String!
-  lastName: String!
-  email: String!
-  username: String!
-}
-
 input AuthorInput {
   firstName: String
   lastName: String
@@ -14,8 +5,29 @@ input AuthorInput {
   username: String
 }
 
+type AuthorEntity {
+  authorId: ID!
+
+  firstName: String!
+  lastName: String!
+  email: String!
+  username: String!
+
+  posts: [PostEntity]
+}
+
+type PostEntity {
+  postId: ID!
+
+  title: String!
+  content: String!
+  publishedOn: String!
+
+  author: AuthorEntity!
+}
+
 type Query {
-    authorById(id: ID!): AuthorEntity
+    authorById(authorId: ID!): AuthorEntity
     allAuthors: [AuthorEntity]!
     authors(authorInput: AuthorInput!): [AuthorEntity]!
 }

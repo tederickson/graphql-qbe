@@ -1,6 +1,6 @@
 INSERT INTO public.author(first_name, last_name, email, username)
 	VALUES
-	( 'Agatha', 'Christie', 'agatha@test.net', 'agatha'),
+	('Agatha', 'Christie', 'agatha@test.net', 'agatha'),
 	('Alexandre', 'Dumas', 'alex@test.net', 'alexandre'),
 	('Jane', 'Austen', 'jane@test.net', 'jane'),
 	('Charles', 'Dickens', 'charles@test.net', 'charles'),

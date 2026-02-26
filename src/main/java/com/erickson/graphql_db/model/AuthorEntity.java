@@ -1,13 +1,17 @@
 package com.erickson.graphql_db.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Entity
 @Table(name = "author")
@@ -18,7 +22,7 @@ import lombok.NoArgsConstructor;
 public final class AuthorEntity {
     @Id
     @GeneratedValue
-    Long id;
+    Long authorId;
 
     // Camel case resolves to column "first_name"
     String firstName;
@@ -27,4 +31,8 @@ public final class AuthorEntity {
 
     // Resolves to column "username"
     String username;
+
+    // Only fetch all related Posts if GraphQl needs the information
+    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
+    List<PostEntity> posts;
 }
