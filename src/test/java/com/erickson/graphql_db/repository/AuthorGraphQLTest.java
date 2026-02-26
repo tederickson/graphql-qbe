@@ -17,8 +17,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @AutoConfigureHttpGraphQlTester
 class AuthorGraphQLTest {
-
-
     @Autowired
     private HttpGraphQlTester graphQlTester;
 
@@ -274,5 +272,33 @@ class AuthorGraphQLTest {
             assertEquals(publishedOn, postEntity.getPublishedOn());
         }
     }
-}
 
+    @Test
+    void findById_NoPosts() {
+        String query = """
+                    query{ authorById(authorId: 1) {
+                          firstName
+                          lastName
+                          posts {
+                            postId
+                            title
+                            publishedOn
+                          }
+                        }
+                      }
+                """;
+
+        AuthorEntity authorEntity = graphQlTester.document(query)
+                .execute()
+                .path("data.authorById")
+                .entity(AuthorEntity.class)
+                .get();
+
+        assertEquals("Agatha", authorEntity.getFirstName());
+        assertEquals("Christie", authorEntity.getLastName());
+        assertNull(authorEntity.getEmail());
+        assertNull(authorEntity.getUsername());
+        assertNull(authorEntity.getAuthorId());
+        assertEquals(0, authorEntity.getPosts().size());
+    }
+}
