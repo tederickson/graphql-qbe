@@ -56,13 +56,12 @@ class AuthorGraphQLTest {
                      }
                 """;
 
-        var list = graphQlTester.document(query)
+        AuthorEntity authorEntity = graphQlTester.document(query)
                 .execute()
                 .path("data.authors")
                 .entityList(AuthorEntity.class)
-                .hasSize(1);
-
-        AuthorEntity authorEntity = list.get().getFirst();
+                .hasSize(1)
+                .get().getFirst();
 
         AuthorEntity expected = AuthorEntity.builder()
                 .authorId(5L)
@@ -89,13 +88,13 @@ class AuthorGraphQLTest {
                      }
                 """;
 
-        var list = graphQlTester.document(query)
+        AuthorEntity authorEntity = graphQlTester.document(query)
                 .execute()
                 .path("data.authors")
                 .entityList(AuthorEntity.class)
-                .hasSize(1);
+                .hasSize(1)
+                .get().getFirst();
 
-        AuthorEntity authorEntity = list.get().getFirst();
         AuthorEntity expected = AuthorEntity.builder()
                 .authorId(5L)
                 .firstName("Jules")
