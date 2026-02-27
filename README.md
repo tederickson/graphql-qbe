@@ -110,7 +110,7 @@ query{
 
 ### Multiple tests and queries
 
-[AuthorRepository tests](src/test/java/com/erickson/graphql_db/repository/AuthorRepositoryTest.java)
+[AuthorRepository tests](src/test/java/com/erickson/graphql_db/repository/AuthorGraphQLTest.java)
 
 * findAll
 * findById
