@@ -119,7 +119,7 @@ query{
 * findByUsername
 * findByEmail
 
-### Gotcha
+## Gotcha
 
 ```graphql
 {
