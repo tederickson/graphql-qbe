@@ -1,7 +1,7 @@
 package com.erickson.graphql_db.repository;
 
 import com.erickson.graphql_db.model.AuthorEntity;
-import com.erickson.graphql_db.model.PostEntity;
+import com.erickson.graphql_db.model.BookEntity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.graphql.tester.AutoConfigureHttpGraphQlTester;
@@ -220,13 +220,13 @@ class AuthorGraphQLTest {
     }
 
     @Test
-    void findById_IncludePosts() {
+    void findById_IncludeBooks() {
         String query = """
                     query{ authorById(authorId: 2) {
                           firstName
                           lastName
-                          posts {
-                            postId
+                          books {
+                            bookId
                             title
                             publishedOn
                           }
@@ -245,42 +245,42 @@ class AuthorGraphQLTest {
         assertNull(authorEntity.getEmail());
         assertNull(authorEntity.getUsername());
         assertNull(authorEntity.getAuthorId());
-        assertEquals(3, authorEntity.getPosts().size());
+        assertEquals(3, authorEntity.getBooks().size());
 
-        for (PostEntity postEntity : authorEntity.getPosts()) {
-            final long postId = postEntity.getPostId();
+        for (BookEntity bookEntity : authorEntity.getBooks()) {
+            final long postId = bookEntity.getBookId();
             String expectedDate;
 
             if (postId == 1L) {
-                assertEquals("The Three Musketeers", postEntity.getTitle());
+                assertEquals("The Three Musketeers", bookEntity.getTitle());
                 expectedDate = "1844-01-25";
             }
             else if (postId == 2L) {
-                assertEquals("The Count of Monte Cristo", postEntity.getTitle());
+                assertEquals("The Count of Monte Cristo", bookEntity.getTitle());
                 expectedDate = "1844-08-05";
             }
             else if (postId == 3L) {
-                assertEquals("The Man in the Iron Mask", postEntity.getTitle());
+                assertEquals("The Man in the Iron Mask", bookEntity.getTitle());
                 expectedDate = "1847-12-05";
             }
             else {
-                throw new IllegalStateException("Unexpected value: " + postEntity);
+                throw new IllegalStateException("Unexpected value: " + bookEntity);
             }
 
             LocalDate publishedOn = LocalDate.parse(expectedDate);
 
-            assertEquals(publishedOn, postEntity.getPublishedOn());
+            assertEquals(publishedOn, bookEntity.getPublishedOn());
         }
     }
 
     @Test
-    void findById_NoPosts() {
+    void findById_NoBooks() {
         String query = """
                     query{ authorById(authorId: 1) {
                           firstName
                           lastName
-                          posts {
-                            postId
+                          books {
+                            bookId
                             title
                             publishedOn
                           }
@@ -299,6 +299,6 @@ class AuthorGraphQLTest {
         assertNull(authorEntity.getEmail());
         assertNull(authorEntity.getUsername());
         assertNull(authorEntity.getAuthorId());
-        assertEquals(0, authorEntity.getPosts().size());
+        assertEquals(0, authorEntity.getBooks().size());
     }
 }

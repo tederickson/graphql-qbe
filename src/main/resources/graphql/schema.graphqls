@@ -13,11 +13,11 @@ type AuthorEntity {
   email: String!
   username: String!
 
-  posts: [PostEntity]
+  books: [BookEntity]
 }
 
-type PostEntity {
-  postId: ID!
+type BookEntity {
+  bookId: ID!
 
   title: String!
   content: String!
@@ -35,7 +35,7 @@ type CommentEntity {
   publishedOn: String!
   updatedOn: String
 
-  post: PostEntity!
+  book: BookEntity!
 }
 
 type Query {
@@ -43,5 +43,5 @@ type Query {
     allAuthors: [AuthorEntity]!
     authors(authorInput: AuthorInput!): [AuthorEntity]!
 
-    postById(postId: ID!): PostEntity
+    bookById(bookId: ID!): BookEntity
 }

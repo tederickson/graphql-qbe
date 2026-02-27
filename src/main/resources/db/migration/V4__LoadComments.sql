@@ -1,5 +1,5 @@
 -- Alexandre Dumas   "The Man in the Iron Mask"
-INSERT INTO public.comment(post_id, name, content, published_on, updated_on)
+INSERT INTO public.comment(book_id, name, content, published_on, updated_on)
 	VALUES
 	(3, 'george', 'Such a twist!', '1944-11-25', null),
 	(3, 'carl', 'The victim of betrayal by his own brother', '1962-08-05', NOW()),

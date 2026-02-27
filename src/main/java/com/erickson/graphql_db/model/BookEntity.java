@@ -15,13 +15,13 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Entity
-@Table(name = "post")
+@Table(name = "book")
 @Data
 @ToString(exclude = "author")
-public class PostEntity {
+public class BookEntity {
     @Id
     @GeneratedValue
-    private Long postId;
+    private Long bookId;
 
     private String title;
     private String content;
@@ -31,6 +31,6 @@ public class PostEntity {
     @JoinColumn(name = "authorId", referencedColumnName = "authorId", nullable = false)
     private AuthorEntity author;
 
-    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "book", fetch = FetchType.LAZY)
     List<CommentEntity> comments;
 }

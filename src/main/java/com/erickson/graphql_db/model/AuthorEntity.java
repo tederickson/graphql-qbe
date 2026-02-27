@@ -32,7 +32,7 @@ public final class AuthorEntity {
     // Resolves to column "username"
     String username;
 
-    // Only fetch all related Posts if GraphQl needs the information
+    // Only fetch all related Books if GraphQl needs the information
     @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
-    List<PostEntity> posts;
+    List<BookEntity> books;
 }

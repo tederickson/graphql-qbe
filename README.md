@@ -71,15 +71,15 @@ query{
 }
 ```
 
-### Query authors and posts using author id
+### Query authors and books using author id
 
 ```graphql
 {
   authorById(authorId: 2) {
     firstName
     lastName
-    posts {
-      postId
+    books {
+      bookId
       title
       publishedOn
     }
@@ -91,8 +91,8 @@ query{
 
 ```graphql
 {
-  postById(postId: 3) {
-    postId
+  bookById(bookId: 3) {
+    bookId
     title
     publishedOn
     
@@ -124,8 +124,8 @@ query{
   authorById(authorId: 2) {
     firstName
     lastName
-    posts {
-      postId
+    books {
+      bookId
       title
       comments {
         name
@@ -137,7 +137,7 @@ query{
 
 Fails due to org.springframework.dao.InvalidDataAccessApiUsageException: org.hibernate.loader.MultipleBagFetchException:
 cannot simultaneously fetch multiple
-bags: [com.erickson.graphql_db.model.PostEntity.comments, com.erickson.graphql_db.model.AuthorEntity.posts]
+bags: [com.erickson.graphql_db.model.BookEntity.comments, com.erickson.graphql_db.model.AuthorEntity.books]
 
 There are various solutions for handling this Hibernate error.  
 See [Spring Data Jpa Multiplebagfetchexception](https://www.springcloud.io/post/2022-06/spring-data-jpa-multiplebagfetchexception)

@@ -8,8 +8,8 @@ CREATE TABLE Author (
 );
 CREATE UNIQUE INDEX ON Author (email);
 
-CREATE TABLE Post (
-  post_id SERIAL PRIMARY KEY,
+CREATE TABLE Book (
+  book_id SERIAL PRIMARY KEY,
 
   title VARCHAR(255) NOT NULL,
   content TEXT NOT NULL,
@@ -18,7 +18,7 @@ CREATE TABLE Post (
   author_id INT,
   FOREIGN key (author_id) REFERENCES Author (author_id)
 );
-CREATE UNIQUE INDEX ON Post (title);
+CREATE UNIQUE INDEX ON Book (title);
 
 CREATE TABLE Comment (
   comment_id SERIAL PRIMARY KEY,
@@ -28,6 +28,6 @@ CREATE TABLE Comment (
   published_on TIMESTAMP NOT NULL,
   updated_on TIMESTAMP,
 
-  post_id INT NOT NULL,
-  FOREIGN key (post_id) REFERENCES Post (post_id)
+  book_id INT NOT NULL,
+  FOREIGN key (book_id) REFERENCES Book (book_id)
 );

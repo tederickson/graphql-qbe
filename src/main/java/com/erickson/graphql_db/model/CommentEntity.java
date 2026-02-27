@@ -24,6 +24,6 @@ public final class CommentEntity {
     private LocalDateTime updatedOn;
 
     @ManyToOne
-    @JoinColumn(name = "postId", referencedColumnName = "postId", nullable = false)
-    private PostEntity post;
+    @JoinColumn(name = "bookId", referencedColumnName = "bookId", nullable = false)
+    private BookEntity book;
 }
