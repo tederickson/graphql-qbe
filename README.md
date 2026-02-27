@@ -3,6 +3,8 @@
 A Spring Boot and GraphQL application inspired by Dan Vega's tutorial on simplifying GraphQL by using Query By Example.
 
 The exciting part is there is no need for a Controller, Service or Data Mappers.
+Plus the three repositories are empty!
+
 GraphQL uses the GraphQlRepository annotation and QueryByExampleExecutor interface instead of a long list declared
 methods.
 
