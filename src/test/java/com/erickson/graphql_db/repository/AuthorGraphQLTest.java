@@ -136,6 +136,27 @@ class AuthorGraphQLTest {
     }
 
     @Test
+    void findByUsername_caseSensitive() {
+        String query = """
+                    query{
+                       authors(authorInput:  {
+                            username: "CHARLES"
+                       }) {
+                         firstName
+                         lastName
+                         username
+                       }
+                     }
+                """;
+
+        graphQlTester.document(query)
+                .execute()
+                .path("data.authors")
+                .entityList(AuthorEntity.class)
+                .hasSize(0);
+    }
+
+    @Test
     void findByEmail() {
         String query = """
                     query{
